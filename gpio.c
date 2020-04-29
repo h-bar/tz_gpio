@@ -1,3 +1,5 @@
+#define OPTEE
+
 #include "bcm2837.h"
 
 #include <unistd.h>
@@ -41,47 +43,47 @@
 
 static TEE_Result invoke_command(uint32_t cmd_id, uint32_t param_types, TEE_Param params[TEE_NUM_PARAMS]) {
   if (cmd_id == GPIO_SET_PIN_FSEL) {
-    uint8_t pin_num = params[0].a;
-    gpio_func func = params[0].b;
+    uint8_t pin_num = params[0].value.a;
+    gpio_func func = params[0].value.b;
     gpio_set_func(pin_num, func);
     return TEE_SUCCESS;
 
 
   } else if (cmd_id == GPIO_SET_PIN_LEVEL) {
-    uint8_t pin_num = params[0].a;
-    gpio_level level = params[0].b;
+    uint8_t pin_num = params[0].value.a;
+    gpio_level level = params[0].value.b;
     gpio_set_level(pin_num, level);
     return TEE_SUCCESS;
 
 
   } else if (cmd_id == GPIO_GET_PIN_LEVEL) {
-    uint8_t pin_num = params[0].a;
-    params[0].b = gpio_get_level(pin_num);
+    uint8_t pin_num = params[0].value.a;
+    params[0].value.b = gpio_get_level(pin_num);
     return TEE_SUCCESS;
 
 
   } else if (cmd_id == PWM_SET_CLK) {
-    uint32_t divider = params[0].a;
+    uint32_t divider = params[0].value.a;
     pwm_set_clk(divider);
     return TEE_SUCCESS;
 
 
   } else if (cmd_id == PWM_SET_M) {
-    uint8_t pwm_num = params[0].a;
-    uint32_t M = params[0].b;
+    uint8_t pwm_num = params[0].value.a;
+    uint32_t M = params[0].value.b;
     pwm_set_M(pwm_num, M);
     return TEE_SUCCESS;
 
 
   } else if (cmd_id == PWM_SET_N) {
-    uint8_t pwm_num = params[0].a;
-    uint32_t N = params[0].b;
+    uint8_t pwm_num = params[0].value.a;
+    uint32_t N = params[0].value.b;
     pwm_set_N(pwm_num, N);
     return TEE_SUCCESS;
 
 
   } else if (cmd_id == PWM_SET_ENABEL) {
-    uint8_t pwm_num = params[0].a;
+    uint8_t pwm_num = params[0].value.a;
     pwm_enable(pwm_num);
     return TEE_SUCCESS;
   }
