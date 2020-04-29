@@ -149,8 +149,8 @@ static volatile bcm2837_clk *clk;
 #define extract_reading(pin, reading)		(reading & (1 << pin%32))
 
 static void gpio_set_func(uint8_t pin, gpio_func func) {
-	gpio->GPFSEL[fsel_grp(pin)] = gpio->GPFSEL[fsel_grp(pin)]
-																& ~(make_fsel_config(pin, 0x7))
+	gpio->GPFSEL[fsel_grp(pin)] = (gpio->GPFSEL[fsel_grp(pin)]
+																& ~(make_fsel_config(pin, 0x7)))
 																| make_fsel_config(pin, func);
 }
 
