@@ -7,9 +7,9 @@ run:
 	sudo ./gpio_test.out
 
 
-.PHONY: install-to-optee
+.PHONY: patch-and-make flash clean
 
-ROOT							?= $(CURDIR)
+ROOT							?= $(CURDIR)/../
 BUILD_DIR					?= $(ROOT)/build
 OPTEE_DIR 				?= $(ROOT)/optee_os
 OPTEE_CORE_DIR 		?= $(OPTEE_DIR)/core
@@ -20,3 +20,9 @@ patch-and-make:
 	@install -v $(CURDIR)/bcm2837.h $(PTA_INCLUDE_DIR)/bcm2837.h
 	@install -v $(CURDIR)/gpio.c $(PTA_DIR)/gpio.c
 	$(MAKE) -C $(BUILD_DIR)
+
+flash:
+	$(MAKE) -C $(BUILD_DIR) flash
+
+optee-clean:
+	$(MAKE) -C $(BUILD_DIR) clean
