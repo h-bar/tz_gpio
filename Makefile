@@ -1,13 +1,15 @@
 all: gpio_test.out
-gpio_test.out:
+gpio_test.out: gpio.c gpio.h gpio_test.c bcm2837.h
 	gcc -o gpio_test.out gpio_test.c
 
-.PHONY: run
+.PHONY: run clean
 run:
 	sudo ./gpio_test.out
+clean: 
+	rm gpio_test.out
+	rm tz_gpio_test.out
 
-
-.PHONY: patch-and-make flash clean
+.PHONY: patch-and-make flash optee-clean
 
 ROOT							?= $(CURDIR)/../
 BUILD_DIR					?= $(ROOT)/build
@@ -26,3 +28,18 @@ flash:
 
 optee-clean:
 	$(MAKE) -C $(BUILD_DIR) clean
+
+
+.PHONY: gpio_test_tz
+
+CFLAGS += -Wall -I../ta/include -I/usr/include -I./include
+LDADD += -lteec -L/usr/lib
+
+gpio_test_tz: tz_gpio_test.out
+tz_gpio_test.out: gpio.c gpio.h tz_gpio_test.c bcm2837.h
+	gcc -o tz_gpio_test.o 	-c tz_gpio_test.c $(CFLAGS)
+	gcc -o tz_gpio_test.out tz_gpio_test.o 		$(LDADD)
+	# gcc -o tz_gpio_test.out tz_gpio_test.c $(CFLAGS) $(LDADD)
+
+run_tz:
+	sudo ./tz_gpio_test.out
