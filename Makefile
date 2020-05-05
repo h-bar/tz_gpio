@@ -1,14 +1,28 @@
-.PHONY: all run clean
-all: gpio_test.out
-run:
-	sudo ./gpio_test.out
-clean:
-	rm ./gpio_test.out
+.PHONY: all nw sw run run-sw run-nw clean clean-sw clean-nw
+all: sw
+
+sw: gpio_test-sw.out
+nw: gpio_test-nw.out
+
+run-sw:
+	sudo ./gpio_test-sw.out
+clean-sw:
+	rm -f ./gpio_test-sw.out
+
+run-nw:
+	sudo ./gpio_test-nw.out
+clean-nw:
+	rm -f ./gpio_test-nw.out
+
+clean: clean-sw clean-nw
 
 CFLAGS += -I../ta/include -I/usr/include -I./include
 LDADD += -lteec -L/usr/lib
-gpio_test.out: gpio_test.c include/tz_gpio.h include/bcm2837.h
-	gcc -o gpio_test.out gpio_test.c $(CFLAGS) $(LDADD)
+gpio_test-sw.out: gpio_test.c include/tz_gpio.h include/bcm2837.h
+	gcc -o gpio_test-sw.out gpio_test.c -D TZ $(CFLAGS) $(LDADD)
+
+gpio_test-nw.out: gpio_test.c include/tz_gpio.h include/bcm2837.h
+	gcc -o gpio_test-nw.out gpio_test.c $(CFLAGS) $(LDADD)
 
 
 

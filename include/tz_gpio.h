@@ -22,7 +22,7 @@ TEEC_Operation op;
 TEEC_UUID uuid = GPIO_UUID;
 uint32_t err_origin;
 
-static int init_tee() {
+static int init_gpio() {
 	res = TEEC_InitializeContext(0, &ctx);
 	if (res != TEEC_SUCCESS) errx(1, "TEEC_InitializeContext failed with code 0x%x", res);
 
@@ -35,7 +35,7 @@ static int init_tee() {
 	return 0;
 }
 
-static int destroy_tee() {
+static int destroy_gpio() {
 	TEEC_CloseSession(&sess);
 	TEEC_FinalizeContext(&ctx);
 	return 0;

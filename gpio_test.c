@@ -3,7 +3,12 @@
 #include <string.h>
 
 #include <tee_client_api.h>
+
+#ifdef TZ
 #include "tz_gpio.h"
+#else
+#include "gpio.h"
+#endif
 
 static void gpio_test_out(uint8_t pin, gpio_level level) {
 	gpio_set_func(pin, gpio_out);
@@ -38,12 +43,12 @@ static void pwm_test() {
 
 int main(void)
 {
-	init_tee();
+	init_gpio();
 	
 	pwm_test();
 	// gpio_test_out(18, gpio_high);
 	// gpio_test_in(23);
 	
-	destroy_tee();
+	destroy_gpio();
 	return 0;
 }
