@@ -1,10 +1,10 @@
 #include <err.h>
 #include <stdio.h>
 #include <string.h>
-
-#include <tee_client_api.h>
+#include <time.h> 
 
 #ifdef TZ
+#include <tee_client_api.h>
 #include "tz_gpio.h"
 #else
 #include "gpio.h"
@@ -40,12 +40,23 @@ static void pwm_test() {
   }
 }
 
+static void test_100_io(){
+	clock_t t; 
+	gpio_set_func(18, gpio_out);
+  t = clock();
+	for (int i = 0; i < 1000; i++) {
+		gpio_set_level(18, gpio_high);
+	}
+	t = clock() - t;
+
+	printf("1000 gpio set takes %d cycles\n", t);
+}
 
 int main(void)
 {
 	init_gpio();
-	
-	pwm_test();
+	test_100_io();
+	// pwm_test();
 	// gpio_test_out(18, gpio_high);
 	// gpio_test_in(23);
 	

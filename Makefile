@@ -1,5 +1,5 @@
 .PHONY: all nw sw run run-sw run-nw clean clean-sw clean-nw
-all: sw
+all: sw nw
 
 sw: gpio_test-sw.out
 nw: gpio_test-nw.out
